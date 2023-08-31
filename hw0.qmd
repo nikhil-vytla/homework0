@@ -1,0 +1,70 @@
+---
+title: "Homework 0 - Quadratic"
+author: "Nikhil Vytla"
+format: html
+editor: visual
+execute:
+  echo: false
+---
+
+```{r}
+#| label: load-packages
+#| message: false
+library(ggplot2)
+```
+
+## Quadratic formula
+
+We utilize the following formula to solve quadratic equations of the form $f(x) = ax^2 + bx + c = 0$: $$
+x = \frac{-b \pm \sqrt{b^2-4ac}}{2a}
+$$
+
+One useful aspect in determining the number of solutions is to isolate the discriminant ($b^2-4ac$). If the discriminant is negative, no real solutions exist, only complex solutions (negative under square root). If the discriminant is positive, two real solutions should exist. If the discriminant is equal to 0, only one unique, real solution exists ($\frac{-b}{2a}$).
+
+```{r}
+#| label: def-solve-quad-fn
+solve_quadratic <- function(x, y, z)
+{
+  print(sprintf("Setting a = %d, b = %d, and c = %d", x, y, z))
+  discriminant <- y^2 - 4*x*z
+  if(discriminant < 0) {
+    print("This quadratic equation has no real solutions.")
+  }
+  else if(discriminant > 0) {
+    answer <- c((-y + sqrt(discriminant)) / (2*x), (-y - sqrt(discriminant)) / (2*x))
+    print(sprintf("This quadratic equation has two real solutions: x = %d, %d.", answer[1], answer[2]))
+  }
+  else {
+    answer <- -y / (2*x)
+    print(sprintf("This quadratic equation has one real solution: x = %d.", answer))
+  }
+}
+```
+
+```{r}
+#| label: def-plot-quad-fn
+plot_quadratic <- function(a, b, c)
+{
+  x <- seq(-5, 5, length = 300)
+  plot(x, a*x^2 + b*x + c, type = "l")
+  abline(h = 0, lty = 2)
+  title(sprintf("f(x) = %d*x^2 + %d*x + %d", a, b, c))
+}
+```
+
+## Solve and plot the quadratic equation
+
+Solve $f(x) = ax^2 + bx + c = 0$:
+
+```{r}
+#| label: fig-plot-quad-solution
+#| fig-alt: A plot of $f(x)$ for $x \in (-5, 5)$.
+#| fig-cap: A plot of $f(x)$ for $x \in (-5, 5)$.
+solve_and_plot <- function(a, b, c)
+{
+  solve_quadratic(a, b, c)
+  plot_quadratic(a, b, c)
+}
+
+solve_and_plot(a = 1, b = 3, c = 2)
+```
